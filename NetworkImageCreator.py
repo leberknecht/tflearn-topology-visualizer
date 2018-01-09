@@ -71,13 +71,14 @@ class NetworkImageCreator:
                 ))
 
     def draw_layer_connections(self, image, weights, x):
+        print("number of weight rows: " + str(len(weights)))
         for weights_row_index in range(len(weights)):
             y = self.y_offset + (weights_row_index * self.y_spacing)
+            y += ((self.max_node_count - len(weights)) * self.y_spacing) / 2
             for target_index in range(len(weights[weights_row_index])):
                 target_nodes_count = len(weights[weights_row_index])
                 target_y = self.y_offset + (((self.max_node_count - target_nodes_count) * self.y_spacing) / 2)
                 target_y += (target_index * self.y_spacing)
-
                 weight = weights[weights_row_index][target_index]
                 if weight > 0:
                     stroke_color = svgwrite.rgb(10, 10, 16, '%')
@@ -93,6 +94,7 @@ class NetworkImageCreator:
                     stroke=stroke_color,
                     stroke_width=int(stroke_width)
                 ))
+                self.connections_drawn += 1
 
     def draw_input_connections(self, image):
         for i in range(self.input_length):
